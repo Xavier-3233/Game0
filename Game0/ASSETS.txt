@@ -1,0 +1,8 @@
+The following were created by Keenan Melton for this project:
+
+- BreakBall.png
+- Brick.png
+- HitTest.png
+- Paddle.png
+- Starman.png
+- Block.png
