@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:Brick.png
 
+#begin BrickHit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BrickHit2.wav
+
 #begin HitTest.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,6 +66,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HitTest.png
+
+#begin Jesse Spillane - Sleepy.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Jesse Spillane - Sleepy.mp3
 
 #begin Paddle.png
 /importer:TextureImporter

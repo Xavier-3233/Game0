@@ -38,11 +38,11 @@ namespace Game0
 
             if ((keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A)) && position.X > 0)
             {
-                position += new Vector2(-2, 0);
+                position += new Vector2(-3, 0);
             }
             if ((keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D)) && position.X + 132 < 480)
             {
-                position += new Vector2(2, 0);
+                position += new Vector2(3, 0);
             }
 
            

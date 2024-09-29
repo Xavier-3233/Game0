@@ -6,3 +6,7 @@ The following were created by Keenan Melton for this project:
 - Paddle.png
 - Starman.png
 - Block.png
+- BrickHit2.wav  --Created using bfxr
+
+
+Music - Sleepy by Jesse Spillane, from Free Music Archive under the CC BY
