@@ -6,7 +6,12 @@ The following were created by Keenan Melton for this project:
 - Paddle.png
 - Starman.png
 - Block.png
+- Meteor.png
+- Beam.png
+- Ship.png
+- Space.png
 - BrickHit2.wav  --Created using bfxr
 
-
+- Explosion.png -- Image by Freepik <a href="https://www.freepik.com/free-psd/realistic-fire-explosion-isolated_156698728.htm#query=explosion%20png&position=5&from_view=keyword&track=ais_hybrid&uuid=a46a4ce5-47c4-4399-8ff2-be1a225656ec">Freepik</a>
 Music - Sleepy by Jesse Spillane, from Free Music Archive under the CC BY
+

@@ -10,6 +10,8 @@ using System.Threading;
 using System.Transactions;
 using Microsoft.Xna.Framework.Content;
 
+
+
 namespace Game0.Screens
 {
     public class Breakdown : GameScreen
@@ -58,9 +60,11 @@ namespace Game0.Screens
         /// </summary>
         private double currentTime;
 
-        private int height = 640;
+        private int height = 600;
 
-        private int width = 400;
+        private int width = 484;
+
+
 
 
 
@@ -68,8 +72,7 @@ namespace Game0.Screens
         public Breakdown(GraphicsDeviceManager graphics)
         {
             _graphics = graphics;
-            /*Content.RootDirectory = "Content";
-            IsMouseVisible = true;*/
+
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
@@ -80,8 +83,10 @@ namespace Game0.Screens
             Random rand = new Random();
             //Changes the screen proportions 
             _graphics.PreferredBackBufferHeight = 600;
-            _graphics.PreferredBackBufferWidth = 480;
+            _graphics.PreferredBackBufferWidth = 484;
             _graphics.ApplyChanges();
+
+
 
             #region Ball
             Vector2 positionBall = new Vector2(width / 2 - 16, height / 2 - 16);
@@ -108,18 +113,18 @@ namespace Game0.Screens
             bool flip = false;
             for (int i = 0; i < 33; i++) //This section is for creating the bricks
             {
-                if (i > 1 && bricks[i - 1].position.X + 11 >= width)
+                if (i > 1 && bricks[i - 1].position.X + 22 >= width)
                 {
                     position.Y += 22;
                     newColor = Color.Green;
-                    position.X = width - 22;
+                    position.X = width - 23;
                     flip = true;
                 }
-                else if (i > 1 && bricks[i - 1].position.X - 20 <= 0)
+                else if (i > 1 && bricks[i - 1].position.X - 22 <= 0)
                 {
                     position.Y += 22;
                     newColor = Color.Blue;
-                    position.X = 22;
+                    position.X = 23;
                     flip = false;
                 }
                 Brick brick = new Brick(position) { color = newColor };
@@ -296,7 +301,7 @@ namespace Game0.Screens
                 ball.Position += ball.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 ball.Update(gameTime);
 
-                if (ball.Position.X < 0 || ball.Position.X > width + 32)
+                if (ball.Position.X < 0 || ball.Position.X >= width - 32)
                 {
                     ball.Velocity.X *= -1;
                 }
@@ -332,7 +337,9 @@ namespace Game0.Screens
                 }
             }
 
-            
+
+
+
 
 
 
@@ -344,6 +351,12 @@ namespace Game0.Screens
             _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+
+
+
+
+            
             ScreenManager.SpriteBatch.Begin();
             ball.Draw(gameTime, ScreenManager.SpriteBatch);
             if (bricksLeft == 0)
@@ -393,6 +406,8 @@ namespace Game0.Screens
                 Color fadeColor = new Color(255, 215, 0, (int)alpha);
                 ScreenManager.SpriteBatch.DrawString(_spriteFont, "Breakdown", new Vector2(480 / 2 - 80, 100), fadeColor);
                 ScreenManager.SpriteBatch.DrawString(_spriteFont, "Use <- and -> keys to move", new Vector2(480 / 2 - 200, 200), fadeColor);
+
+
             }
             paddle.Draw(gameTime, ScreenManager.SpriteBatch);
             ScreenManager.SpriteBatch.End();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Game0
 {
-    public class Ball //NOTE: USE THIS CLASS FOR BOUNDING PURPOSES!!!!! REPLACE WITH STUFF IN MAIN
+    public class Ball 
     {
 
         /// <summary>

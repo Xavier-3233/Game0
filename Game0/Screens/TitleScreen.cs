@@ -33,15 +33,18 @@ namespace Game0.Screens
         public TitleScreen(GraphicsDeviceManager graphics) : base("Main Menu")
         {
             _graphics = graphics;
-            var playGameMenuEntry = new MenuEntry("Play Game"); 
+            var playGameMenuEntry = new MenuEntry("Play Game");
+            var playSpaceMenuEntry = new MenuEntry("Play Space");
             var creditsMenuEntry = new MenuEntry("Credits");
             var exitMenuEntry = new MenuEntry("Exit");
 
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
+            playSpaceMenuEntry.Selected += PlaySpaceSelected;
             creditsMenuEntry.Selected += CreditsMenuEntrySelected;
             exitMenuEntry.Selected += ConfirmExitMessageBoxAccepted;
 
             MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(playSpaceMenuEntry);
             MenuEntries.Add(creditsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
 
@@ -55,6 +58,11 @@ namespace Game0.Screens
         private void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new Breakdown(_graphics), null);
+        }
+
+        private void PlaySpaceSelected(object sender, PlayerIndexEventArgs e)
+        {
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new SpaceShooter(_graphics), null);
         }
 
         private void CreditsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
