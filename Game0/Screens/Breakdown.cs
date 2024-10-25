@@ -9,8 +9,10 @@ using System;
 using System.Threading;
 using System.Transactions;
 using Microsoft.Xna.Framework.Content;
-
-
+using System.Reflection.Metadata;
+using System.Text.Json;
+using System.IO;
+using System.Linq;
 
 namespace Game0.Screens
 {
@@ -152,85 +154,10 @@ namespace Game0.Screens
             };
             #endregion
             bricksLeft = bricks.Length;
+            
         }
 
-        /*protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-
-            Random rand = new Random();
-            //Changes the screen proportions 
-            _graphics.PreferredBackBufferHeight = 640;
-            _graphics.PreferredBackBufferWidth = 480;
-            _graphics.ApplyChanges();
-
-            #region Ball
-            Vector2 positionBall = new Vector2(GraphicsDevice.Viewport.Width / 2 - 16, GraphicsDevice.Viewport.Height / 2 - 16);
-
-            ball = new Ball(positionBall);
-
-            ball.Position.X = GraphicsDevice.Viewport.Width / 2 - 16;
-            ball.Position.Y = GraphicsDevice.Viewport.Height / 2 - 16;
-            ball.Velocity = new Vector2((float)rand.NextDouble(), 1.0f);
-            if (ball.Velocity.X == 0) ball.Velocity.X = 1;
-            ball.Velocity.Normalize();
-            ball.Velocity *= 100;
-            #endregion
-            paddle = new Paddle()
-            {
-                position = new Vector2(200, 500),
-
-            };
-
-            #region BrickSection
-            Vector2 position = new Vector2(22, 11);
-            bricks = new Brick[33];
-            Color newColor = Color.Red;
-            bool flip = false;
-            for (int i = 0; i < 33; i++) //This section is for creating the bricks
-            {
-                if (i > 1 && bricks[i - 1].position.X + 20 >= GraphicsDevice.Viewport.Width)
-                {
-                    position.Y += 22;
-                    newColor = Color.Green;
-                    position.X = GraphicsDevice.Viewport.Width - 22;
-                    flip = true;
-                }
-                else if (i > 1 && bricks[i - 1].position.X - 20 <= 0)
-                {
-                    position.Y += 22;
-                    newColor = Color.Blue;
-                    position.X = 22;
-                    flip = false;
-                }
-                Brick brick = new Brick(position) { color = newColor };
-                bricks[i] = brick;
-                if (flip)
-                {
-                    position.X -= 44;
-                }
-                else
-                {
-                    position.X += 44;
-                }
-
-
-            }
-            #endregion
-            #region Stars
-            stars = new StarSprite[]
-            {
-                new StarSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 32, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 32)),
-                new StarSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 32, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 32)),
-                new StarSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 32, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 32)),
-                new StarSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 32, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 32)),
-                new StarSprite(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width - 32, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height - 32))
-            };
-            #endregion
-            bricksLeft = bricks.Length;
-
-            base.Initialize();
-        }*/
+        
 
         public override void Activate()
         {
@@ -238,7 +165,6 @@ namespace Game0.Screens
                 _content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             _spriteFont = _content.Load<SpriteFont>("PublicPixel");
-            //_spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             ball.LoadContent(_content);
@@ -251,30 +177,16 @@ namespace Game0.Screens
             {
                 star.LoadContent(_content);
             }
+
+
+
+            
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_song);
         }
 
-        /*protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-            ball.LoadContent(_content);
-            foreach (var brick in bricks) brick.LoadContent(_content);
-            paddle.LoadContent(_content);
-            _spriteFont = _content.Load<SpriteFont>("PublicPixel");
-            _brickhit = _content.Load<SoundEffect>("BrickHit2");
-            _song = _content.Load<Song>("Jesse Spillane - Sleepy");
-            foreach (var star in stars)
-            {
-                star.LoadContent(_content);
-            }
-
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(_song);
-        }*/
+        
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
@@ -283,6 +195,20 @@ namespace Game0.Screens
 
             // TODO: Add your update logic here
             base.Update(gameTime, otherScreenHasFocus, false);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                SaveGame();
+                //ExitScreen();
+               
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                LoadGame();
+                new Breakdown(_graphics);
+                Activate();
+
+            }
 
             if (IsActive)
             {
@@ -359,6 +285,7 @@ namespace Game0.Screens
             
             ScreenManager.SpriteBatch.Begin();
             ball.Draw(gameTime, ScreenManager.SpriteBatch);
+
             if (bricksLeft == 0)
             {
                 ball.HitBottom = true;
@@ -406,12 +333,72 @@ namespace Game0.Screens
                 Color fadeColor = new Color(255, 215, 0, (int)alpha);
                 ScreenManager.SpriteBatch.DrawString(_spriteFont, "Breakdown", new Vector2(480 / 2 - 80, 100), fadeColor);
                 ScreenManager.SpriteBatch.DrawString(_spriteFont, "Use <- and -> keys to move", new Vector2(480 / 2 - 200, 200), fadeColor);
+                ScreenManager.SpriteBatch.DrawString(_spriteFont, "Use 'S' to Save", new Vector2(480 / 2 - 200, 300), fadeColor);
+                ScreenManager.SpriteBatch.DrawString(_spriteFont, "Use 'L' to Load", new Vector2(480 / 2 - 200, 400), fadeColor);
 
 
             }
             paddle.Draw(gameTime, ScreenManager.SpriteBatch);
             ScreenManager.SpriteBatch.End();
             base.Draw(gameTime);
+        }
+
+
+
+        public void SaveGame()
+        {
+            var gameState = new GameState
+            {
+                BallPosition = ball.Position,
+                BallVelocity = ball.Velocity,
+                PaddlePosition = paddle.position,
+                BrickPositions = bricks.Select(b => (SerializableVector2)b.position).ToArray(),
+                BrickHits = bricks.Select(b => b.Hit).ToList(),
+                BricksLeft = bricksLeft,
+                CurrentTime = currentTime,
+                BallHitBottom = ball.HitBottom
+            };
+
+            string json = JsonSerializer.Serialize(gameState);
+            File.WriteAllText("gamestate.json", json);
+        }
+
+        public void LoadGame()
+        {
+            if (File.Exists("gamestate.json"))
+            {
+                string json = File.ReadAllText("gamestate.json");
+                var gameState = JsonSerializer.Deserialize<GameState>(json);
+
+                ball.Position = gameState.BallPosition;
+                ball.Velocity = gameState.BallVelocity;
+                paddle.position = gameState.PaddlePosition;
+
+                for (int i = 0; i < bricks.Length; i++)
+                {
+                    bricks[i].position = gameState.BrickPositions[i];
+                    bricks[i].Hit = gameState.BrickHits[i];
+                }
+
+                bricksLeft = gameState.BricksLeft;
+                currentTime = gameState.CurrentTime;
+                ball.HitBottom = gameState.BallHitBottom;
+            }
+        }
+
+        public struct SerializableVector2
+        {
+            public float X { get; set; }
+            public float Y { get; set; }
+
+            public SerializableVector2(float x, float y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            public static implicit operator Vector2(SerializableVector2 s) => new Vector2(s.X, s.Y);
+            public static implicit operator SerializableVector2(Vector2 v) => new SerializableVector2(v.X, v.Y);
         }
     }
 }
